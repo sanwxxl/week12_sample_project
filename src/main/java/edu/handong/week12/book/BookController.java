@@ -11,8 +11,8 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
+
 @Tag(name = "Book", description = "책 CRUD API")
 @RestController
 @RequestMapping("/api/books")
@@ -36,10 +36,16 @@ public class BookController {
         return ResponseEntity.ok(service.findById(id));
     }
 
+
     @Operation(summary = "책 등록")
+    // POST 요청이 들어오면 이 메서드가 실행
     @PostMapping
+    // @RequestBody: 요청 JSON을 BookRequest DTO로 변환한다
+    // 아래 코드애서 @Valid는 메서드 실행 전에 BookRequest의 검증 규칙(@NotBlank, @Min 등등)을 검사하고, 실패하면 400 응답으로 넘어간다
     public ResponseEntity<BookResponse> create(@Valid @RequestBody BookRequest request) {
+        // 검증을 통과한 DTO를 Service에 넘겨 저장하고, 저장된 결과를 BookResponse DTO로 받는다
         BookResponse response = service.create(request);
+        // ResponseEntity로 상태 코드 201 Created와 응답 DTO를 함께 반환한다(여기서 넘기는건 HttpStatus로 넘긴디)
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
