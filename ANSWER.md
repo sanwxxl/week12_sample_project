@@ -1,3 +1,12 @@
+## Project Information: 프로젝트 소개, GitHub URL, Render URL
+- Github URL:https://github.com/2026-2-WebService/assign12-c01-22500091
+- Render URL:https://week12-sample-project-0nzr.onrender.com
+
+수업에서 제공받은 SpringBoot REST API Sample Project 를 분석하고, 과제에서 요구하는 질문 응답과, 주석 작성, 코드 완성을 진행하고 ANSWER.md에 기록하는 프로젝트형 과제이다. 
+
+## Installation: Java/DB 환경과 실행 방법
+제공받은 프로젝트 fork/clone --> github org Repo remote add --> Dockerfile추가/환경변수 설정 --> Render배포 / DBeaver, Postman 실행 및 테스트
+
 ## STEP2 질문 8개
 
 - Project Structure & JPA
