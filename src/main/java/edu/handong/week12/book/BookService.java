@@ -2,6 +2,8 @@ package edu.handong.week12.book;
 
 import edu.handong.week12.dto.BookRequest;
 import edu.handong.week12.dto.BookResponse;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -15,13 +17,9 @@ public class BookService {
     this.repository = repository;
   }
 
-  public List<BookResponse> findAll() {
-    List<Book> books = repository.findAll();
-    List<BookResponse> result = new ArrayList<>();
-    for (Book book : books) {
-      result.add(BookResponse.from(book));
-    }
-    return result;
+  public Page<BookResponse> findAll(Pageable pageable) {
+    return repository.findAll(pageable)
+            .map(BookResponse::from);
   }// TODO STEP 6: Pagination/Sorting
 
   public BookResponse findById(Long id) {
