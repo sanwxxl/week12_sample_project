@@ -65,3 +65,11 @@ sort=price,desc는 ORDER BY price DESC로 바뀌어 실행할 수 있음.
 - 변경 전: 요청과 응답에 Book Entity를 그대로 사용해서, 요청에 id도 보낼 수 있었다.
 - 변경 후: 요청은 BookRequest(title, author, price), 응답은 BookResponse로 바꿨다.
 - 상태 코드: POST는 200에서 201로, DELETE는 200에서 204로 바뀌었으며, GET과 PUT은 200 그대로다.
+
+## STEP 6. 1~6번 화면 캡쳐
+1. 01_sample.png: ![img.png](results/01_sample.png)
+2. 02_dto_created.png — DTO 적용 후 POST 성공 (201): ![img.png](results/02_dto_created.png)
+3. 03_validation.png — 잘못된 입력 요청 (400): ![img_1.png](results/03_validation.png)
+4. 04_not_found.png — 존재하지 않는 ID (404): ![img.png](results/04_not_found.png)
+5. 05_pagination.png — 페이지/정렬 적용 결과(가격 기준 내림차순 정렬): ![img.png](results/05_pagination-1.png) ![img.png](results/05_pagination-2.png)
+6. 06_swagger.png — Swagger UI/API 테스트 화면: ![img.png](results/06_swagger.png)
