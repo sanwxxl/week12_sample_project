@@ -59,3 +59,9 @@ sort=price,desc는 ORDER BY price DESC로 바뀌어 실행할 수 있음.
 
 
 관련 소스: BookController 전체, build.gradle(springdoc 의존성 필요)
+
+## STEP 3. DTO 적용 전/후 비교
+
+- 변경 전: 요청과 응답에 Book Entity를 그대로 사용해서, 요청에 id도 보낼 수 있었다.
+- 변경 후: 요청은 BookRequest(title, author, price), 응답은 BookResponse로 바꿨다.
+- 상태 코드: POST는 200에서 201로, DELETE는 200에서 204로 바뀌었으며, GET과 PUT은 200 그대로다.
