@@ -1,0 +1,7 @@
+package edu.handong.week12.book;
+
+public class BookNotFoundException extends RuntimeException {
+    public BookNotFoundException(Long id) {
+        super("Book not found: " + id);
+    }
+}
