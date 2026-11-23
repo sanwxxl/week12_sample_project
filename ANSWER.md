@@ -60,11 +60,26 @@ sort=price,desc는 ORDER BY price DESC로 바뀌어 실행할 수 있음.
 
 관련 소스: BookController 전체, build.gradle(springdoc 의존성 필요)
 
+## STEP 2. 주석 작성 3개
+   각 주석 작성 위치
+   - BookController.create() --> 요청 JSON을 BookRequest로 받고, @Valid로 검증한 다음 Service에 저장을 맡긴다. 
+   - BookService.findAll(Pageable) --> page, size, sort 정보가 담긴 Pageable로 해당 페이지의 책만 정렬해서 조회. 
+   - BookService.findById() --> id로 책을 찾고, 없으면 BookNotFoundException을 던져서 GlobalExceptionHandler가 404로 응답하게 함. 
+
 ## STEP 3. DTO 적용 전/후 비교
 
 - 변경 전: 요청과 응답에 Book Entity를 그대로 사용해서, 요청에 id도 보낼 수 있었다.
 - 변경 후: 요청은 BookRequest(title, author, price), 응답은 BookResponse로 바꿨다.
 - 상태 코드: POST는 200에서 201로, DELETE는 200에서 204로 바뀌었으며, GET과 PUT은 200 그대로다.
+
+## STEP 4~5. New Features
+
+- Validation: BookRequest에 @NotBlank, @Min(0)을 붙이고 컨트롤러에서 Valid로 검서하고, 빈 제목·저자나 음수 가격이면 400을 반환함.
+- 공통 예외 처리: RestControllerAdvice인 GlobalExceptionHandler가 모든 예외를 모아서 처리한다.
+- Pagination/Sorting: Pageable로 page, size, sort를 받아서 Page<BookResponse>를 반환한다. 본인은 가격 기준으로 내림차순 정렬을 실험함. 페이지 단위로 정렬된 조회가 가능.
+- Swagger: springdoc 의존성을 추가해서 /v3/api-docs(OpenAPI JSON)와 /swagger-ui.html(테스트 화면)을 활성화하였다. @Tag와 @Operation으로 API 설명도 추가했다.
+
+
 
 ## STEP 6. 1~6번 화면 캡쳐
 1. 01_sample.png: ![img.png](results/01_sample.png)
@@ -73,3 +88,19 @@ sort=price,desc는 ORDER BY price DESC로 바뀌어 실행할 수 있음.
 4. 04_not_found.png — 존재하지 않는 ID (404): ![img.png](results/04_not_found.png)
 5. 05_pagination.png — 페이지/정렬 적용 결과(가격 기준 내림차순 정렬): ![img.png](results/05_pagination-1.png) ![img.png](results/05_pagination-2.png)
 6. 06_swagger.png — Swagger UI/API 테스트 화면: ![img.png](results/06_swagger.png)
+
+## Weekly Review
+
+### 새롭게 배운 내용 3가지
+1. DTO를 쓰면 Entity를 직접 노출하지 않고, 입력받을 값과 보여줄 값을 따로 관리할 수 있다.
+2. ＠RestControllerAdvice로 예외를 한 곳에 모아서 400, 404 같은 통일된 에러 응답을 만들 수 있음.
+3. Pageable만 받으면 page, size, sort를 Spring이 알아서 처리해 줘서, 페이징과 정렬을 쉽게 적용할 수 있다.
+
+### 어려웠던 점과 해결 방법
+- ApiError의 code를 int로 만들어서 "String cannot be converted to int" 에러가 났다. record 타입을 String으로 바꿔서 해결함.
+- Swagger import에 빨간 줄이 떴는데 실행은 됐다. 이유를 확인해보니 IntelliJ가 Gradle 변경을 아직 못 읽은 거라서, Gradle 새로고침으로 해결함.
+- Swagger UI에서 sort를 ["price,desc"]로 넣었더니 500 에러가 났다. --> 대괄호를 빼고 "price,desc"로 보내니 정상 동작함.
+
+### AI 활용 내용 및 느낀 점
+- 이번 주차는 이해가 잘 안되어서 각 STEP마다 작성전에 힌트를 조금씩 받고 내가 코드를 직접 작성하고 검사받는 식으로 과제를 완성해나갔다. 강의자료와 비교하면서 수업 방식에 맞게 코드를 고쳤다. 에러가 나면 캡처를 보여주고 원인을 물어보았다.
+- 힌트를 받고 코드를 적는 것과 직접 이해하는 건 다르다고 느꼈다. 다음에는 처음부터 직접 짜 보고 검사받는 식으로 해보고 싶다.
